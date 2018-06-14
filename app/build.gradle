@@ -1,0 +1,49 @@
+apply plugin: 'com.android.application'
+
+android {
+
+    compileSdkVersion 26
+
+    defaultConfig {
+//        applicationId "com.dangnao.dangnaoapp"
+        applicationId "com.dangnao.dangnaoapp"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+    }
+
+    // 配置签名
+    signingConfigs {
+        //18DAD297A0152B88CE45460C0318A831
+        key {
+            storeFile file("../dn.jks")
+            storePassword "lxh0315 "
+            keyAlias "qj_test"
+            keyPassword "lxh0315"
+        }
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.key
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
+
+    api project(':sharesdk')
+}
