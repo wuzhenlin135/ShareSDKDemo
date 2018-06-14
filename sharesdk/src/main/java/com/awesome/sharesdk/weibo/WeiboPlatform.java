@@ -95,7 +95,7 @@ public class WeiboPlatform extends Platform {
         TextObject textObject = new TextObject();
         textObject.title = params.getTitle();
         textObject.text = params.getText();
-        textObject.text = params.getUrl();
+        textObject.actionUrl = params.getUrl();
         ImageObject imageObject = null;
         if (!TextUtils.isEmpty(params.getImagePath())) {
             imageObject = new ImageObject();
