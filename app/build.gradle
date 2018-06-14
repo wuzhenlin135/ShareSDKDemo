@@ -15,25 +15,37 @@ android {
 
     // 配置签名
     signingConfigs {
-        //18DAD297A0152B88CE45460C0318A831
-        key {
-            storeFile file("../dn.jks")
-            storePassword "lxh0315 "
-            keyAlias "qj_test"
-            keyPassword "lxh0315"
+
+//        MD5 EF5D49DDE1D84AFF2D107765E75C98D4
+//        SHA1 AF3F3F0DE122057562ABA208E15D27699FFAB320
+//        SHA256 0DB3367FCB606BE9A0A687130AB2A7FFE39F6ABB01C1C0EBEDD3F39847A3FAC5
+
+        debug {
+            storeFile file("../key_debug.jks")
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
         }
 
+        release {
+            storeFile file("../key_release.jks")
+            storePassword 'dn123456'
+            keyAlias 'dn'
+            keyPassword 'dn123456'
+        }
     }
 
     buildTypes {
+
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         debug {
             minifyEnabled false
-            signingConfig signingConfigs.key
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

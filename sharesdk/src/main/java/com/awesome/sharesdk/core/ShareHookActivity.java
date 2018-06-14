@@ -5,14 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.util.Log;
 
 
 public class ShareHookActivity extends HookActivity implements PlatformActionListener, ShareActionView.PlatformSelectListener {
+    String TAG = getClass().getSimpleName();
     private Platform platform;
     private Platform.ShareParams shareParams;
     private int type;
     private ResultReceiver resultCallback;
-
+    private boolean isCallback = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +24,7 @@ public class ShareHookActivity extends HookActivity implements PlatformActionLis
             finish();
             return;
         }
-
+        isCallback = false;
         int platformId = params.getInt(Config.KEY_PLATFORM, -1);
         resultCallback = params.getParcelable(Config.KEY_CALLBACK);
 
@@ -51,6 +53,7 @@ public class ShareHookActivity extends HookActivity implements PlatformActionLis
     protected void onRestart() {
         super.onRestart();
         // 解决，留在微信当前透明Activity未关闭的问题。
+        Log.e(TAG,"onRestart .....");
         mainHandler.sendEmptyMessageDelayed(WHAT_FINISH_ACTIVITY, 200);
     }
 
@@ -100,6 +103,7 @@ public class ShareHookActivity extends HookActivity implements PlatformActionLis
             bundle.putInt(Config.KEY_PLATFORM, platform.getPlatformEntity().id);
             resultCallback.send(Config.RESLUT_CODE_COMPLETE, bundle);
         }
+        isCallback = true;
         finish();
     }
 
@@ -112,6 +116,7 @@ public class ShareHookActivity extends HookActivity implements PlatformActionLis
             bundle.putString(Config.PARAM_MSG, error.getMessage());
             resultCallback.send(Config.RESLUT_CODE_ERROR, bundle);
         }
+        isCallback = true;
         finish();
     }
 
@@ -123,6 +128,7 @@ public class ShareHookActivity extends HookActivity implements PlatformActionLis
             bundle.putInt(Config.KEY_PLATFORM, platform.getPlatformEntity().id);
             resultCallback.send(Config.RESLUT_CODE_CANCEL, bundle);
         }
+        isCallback = true;
         finish();
     }
 
@@ -132,6 +138,10 @@ public class ShareHookActivity extends HookActivity implements PlatformActionLis
     private Handler mainHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             if (msg.what == WHAT_FINISH_ACTIVITY) {
+                if (!isCallback) {
+                    onCancel(platform, type);
+                }
+                isCallback = true;
                 finish();
             }
         }

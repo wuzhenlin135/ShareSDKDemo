@@ -8,6 +8,8 @@ import com.awesome.sharesdk.core.PlatformEntity;
 import com.awesome.sharesdk.utils.Utils;
 import com.tencent.connect.share.QzoneShare;
 
+import java.util.ArrayList;
+
 
 public class QZonePlatform extends QQCorePlatform {
 
@@ -32,6 +34,8 @@ public class QZonePlatform extends QQCorePlatform {
             String imageUrl = params.getImagePath();
             imageUrl = TextUtils.isEmpty(imageUrl) ? params.getImageUrl() : imageUrl;
             bundle.putString(QzoneShare.SHARE_TO_QQ_IMAGE_URL, imageUrl);
+        } else {
+            bundle.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, new ArrayList<String>());
         }
         return bundle;
     }

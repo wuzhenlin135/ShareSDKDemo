@@ -5,6 +5,7 @@ import com.awesome.sharesdk.qq.QQPlatform;
 import com.awesome.sharesdk.qq.QZonePlatform;
 import com.awesome.sharesdk.wechat.WechatFriendPlatform;
 import com.awesome.sharesdk.wechat.WechatTimelinePlatform;
+import com.awesome.sharesdk.weibo.WeiboPlatform;
 
 class PlatformFactory {
 
@@ -22,7 +23,7 @@ class PlatformFactory {
             case WECHAT_TIMELINE:
                 return new WechatTimelinePlatform(context, entity.appKey);
             case WEIBO:
-                return new WechatTimelinePlatform(context, entity.appKey);
+                return new WeiboPlatform(context, entity.appKey);
             default:
                 throw new UnsupportedOperationException(entity.name + " ：：暂不支持该平台");
         }

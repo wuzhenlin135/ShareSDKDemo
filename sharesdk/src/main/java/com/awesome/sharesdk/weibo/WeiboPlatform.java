@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.awesome.sharesdk.core.Config;
 import com.awesome.sharesdk.core.Platform;
@@ -33,7 +34,7 @@ import static com.awesome.sharesdk.weibo.WeiboConfig.*;
  */
 
 public class WeiboPlatform extends Platform {
-
+    String TAG = getClass().getSimpleName();
     private SsoHandler mSsoHandler;
     private WbShareHandler shareHandler;
     private Activity context;
@@ -68,6 +69,7 @@ public class WeiboPlatform extends Platform {
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        Log.e(TAG,"onNewIntent ....... ");
         shareHandler.doResultIntent(new Intent(), new InnerWbShareCallback());
     }
 
@@ -174,16 +176,19 @@ public class WeiboPlatform extends Platform {
 
         @Override
         public void onWbShareSuccess() {
+            Log.e(TAG,"onWbShareSuccess");
             notifyComplete(ACTION_SHARE, new Bundle());
         }
 
         @Override
         public void onWbShareCancel() {
+            Log.e(TAG,"onWbShareSuccess");
             notifyCancel(ACTION_SHARE);
         }
 
         @Override
         public void onWbShareFail() {
+            Log.e(TAG,"onWbShareFail");
             notifyError(ACTION_SHARE, new RuntimeException("error"));
         }
     }
@@ -191,6 +196,7 @@ public class WeiboPlatform extends Platform {
     private class SelfWbAuthListener implements com.sina.weibo.sdk.auth.WbAuthListener{
         @Override
         public void onSuccess(final Oauth2AccessToken token) {
+            Log.e(TAG,"SelfWbAuthListener onSuccess");
             context.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -210,11 +216,13 @@ public class WeiboPlatform extends Platform {
 
         @Override
         public void cancel() {
+            Log.e(TAG,"SelfWbAuthListener cancel");
             notifyCancel(ACTION_AUTH);
         }
 
         @Override
         public void onFailure(WbConnectErrorMessage errorMessage) {
+            Log.e(TAG,"SelfWbAuthListener onFailure");
             notifyError(ACTION_AUTH, new RuntimeException(errorMessage.getErrorMessage()));
         }
     }
